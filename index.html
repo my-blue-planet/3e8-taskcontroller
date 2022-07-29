@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Run Python</title>
+</head>
+<body>
+	<h1>Test TaskController</h1>
+	<div class="task"></div>
+  <script type="module">
+    import {TaskController} from "./src/TaskController.ts";
+    // runPython({code: "print('Yes, it works!')"})
+		const t = document.querySelector(".task")
+		const tk = new TaskController({element: t, template: "print(2**16)", solution: "333", taskname:"test", mode: "python"}, {})
+		console.log(TaskController);
+  </script>
+</body>
+</html>
