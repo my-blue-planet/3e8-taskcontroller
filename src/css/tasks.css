@@ -1,0 +1,121 @@
+html {
+  box-sizing: border-box;
+}
+body {padding: 0; margin: 0;}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.authframe {display: none; border: none;}
+
+#header {
+  background-color: #444477;
+  padding: 10px;
+}
+
+.logo {
+  width: 1.2em;
+  vertical-align: text-bottom;
+}
+
+.title {
+  color: #aaaadd;
+}
+
+#header a {
+  display: inline-block;
+  text-decoration: none;
+  padding: 0.2em;
+  background-color: rgb(255, 172, 112);
+
+}
+
+#header a.solved {
+  background-color: rgb(156, 217, 141);
+}
+
+#header a.active {
+  font-weight: bold;
+}
+
+#header a.savingIsOk {
+  background-color: rgb(150, 200, 250);
+}
+
+#header a.savingIsNotOk {
+  background-color: rgb(230, 230, 150);
+}
+
+.modal {
+  background-color: #ccc;
+  padding: 2em;
+  position: absolute;
+  border: 3px solid #444477;
+  left: 25%;
+  text-align: center;
+  top: 180px;
+  width: 50%;
+  z-index: 1000;
+}
+
+.upperPart {
+  min-height: 25vh;
+  background-color: #eeeef0;
+  padding-bottom: 1em;
+}
+
+.upperPart h3 {
+  margin-top: 0.8em;
+}
+
+.description {
+  font-size: 0.9em;
+  margin-left: 1em;
+}
+
+.description ul {
+  margin: 0;
+}
+
+.description li {
+  margin-top: 0.3em;
+}
+
+.lowerPart {
+  height: 75vh;
+}
+
+.eddy {height: 75vh; overflow-y: auto; position:relative;}
+
+.result_iframe {height: 75vh;}
+
+code {
+  background-color: rgba(250,250,255,0.8);
+  outline: 1px solid rgba(220,220,230,0.8);
+  margin: 0 1px;
+  padding: 0 2px;
+}
+code.html_tag{color: #44c}
+code.html_tag::before{content:"<"}
+code.html_tag::after{content:">"}
+
+q {
+  padding: 0 0.31em;
+  background-color: rgba(150,150,150,0.2);
+}
+
+.overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(128,128,128,0.5);
+  top:0; bottom:0; left: 0; right: 0;
+  z-index: 1000;
+}
+
+.overlay button {
+  margin: 20vh 20vw 20vh 20vw;
+  width: 60vw;
+  height: 20vh;
+}

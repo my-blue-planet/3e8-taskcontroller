@@ -1,0 +1,148 @@
+::-moz-selection, ::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/*INTRO*/
+.linktostrips {
+    padding: 2em;
+}
+
+.linktostrips a{
+    padding: 1em;
+    text-decoration: none;
+    color: white;
+    cursor: pointer;
+    background-color: black;
+    width: 60%;
+    border-radius: 2px;
+    display: block;
+    margin: 1em;
+}
+
+/*EDITOR*/
+
+.ace {
+    position: relative;
+}
+
+#editor {font-size: 22px; line-height: 1.3;}
+
+h3 {margin: 0; padding:0;}
+
+select, input, button {
+    font-family: 'Open Sans', sans-serif;
+    vertical-align: top;
+}
+
+.eddy.solved {
+    --framecolor: #cce8cc;
+}
+
+.eddy.saved {
+    --framecolor: #cce8ff;
+}
+
+.eddy {
+    --framecolor: #aaaabb;
+    background-color: var(--framecolor);
+    border-left: 6px solid var(--framecolor);
+    border-right: 6px solid var(--framecolor);
+    position: relative;
+}
+
+.menu {
+    padding: 0.1em;
+
+}
+
+.menu select {
+    height: 29px;
+}
+
+.menu .taskname {
+    height: 30px;
+}
+
+.menu .version {
+    height: 30px;
+}
+
+.menu .comment {
+    height: 30px;
+    width: 4em;
+}
+
+.menu button img  {
+    height: 1.2em;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.menu button  {
+    padding: 0 0.2em;
+    margin: 0.1em;
+    font-size: 1.2em;
+}
+
+/**
+Version opener
+ */
+.version_opener {position:absolute; background-color: white; z-index:1000; padding: 1em 1em 0.3em 1em; width: 100%;}
+.version_opener {display: none;}
+/*.version_loader_open .version_opener {display: block;} /*MyEditorV1*/
+.version_opener.open {display: block;}
+.version_opener h4 {margin: 0.2em 0;}
+.version_suggestion:hover {color: #226;}
+.version_suggestion {opacity: 0.6; display: none;}
+.version_suggestion.newerThanLastSave {display: block;}
+.version_suggestion.save {font-weight: bold; opacity: 1; display: block;}
+.show_autosaved .version_suggestion {display: block;}
+.version_suggestion.correct {background-color: #afa;}
+.version_suggestion.wrong {background-color: #d98;}
+
+.output {
+    border-top: 2px solid #ccc;
+    min-height: 4em;
+    max-height: 50vh;
+    background-color: #666;
+    overflow-x: auto;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
+
+.output .log {
+    color: white;
+    padding: 0.1em 1em;
+}
+
+.output .error {
+    color: rgb(255,180, 180);
+    background-color: rgb(100,20,20);
+    padding: 0.2em 1em;
+}
+
+.output .warn {
+    color: rgb(255,255, 180);
+    background-color: rgb(40,40,10);
+    padding: 0.2em 1em;
+}
+
+.solution.wrap {
+    width: 60%; position: absolute; left: 100%; top: 0; background-color: #799dd2; z-index: 10;
+}
+
+.ace-chrome .ace_gutter-cell {opacity: 0.6}
+.ace-chrome .ace_gutter-active-line {background-color: inherit;}
+
+.ace_invisible:not(.ace_invisible_tab) {
+    visibility: hidden;
+}
+
+.ace_invisible_tab {opacity: 0.3;}
