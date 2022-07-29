@@ -1,0 +1,28 @@
+{
+  "name": "3e8-taskcontroller",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postbuild": "node myPostbuilder"
+  },
+  "keywords": [],
+  "author": "3e8",
+  "license": "CC-SA",
+  "files": [
+    "lib/**/*"
+  ],
+  "devDependencies": {
+    "typescript": "^4.7.4",
+    "vite": "^3.0.3"
+  },
+  "dependencies": {
+    "3e8-editor": "^3.0.2",
+    "3e8-run-python-skulpt": "^1.0.0"
+  }
+}
