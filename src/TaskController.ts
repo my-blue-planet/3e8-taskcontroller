@@ -3,7 +3,7 @@ import './css/editor.css'
 import {Editor, IEditorState, TMode} from "3e8-editor";
 import TaskMenu from "./TaskMenu";
 import {IVersion, Tautosave, VersionManager} from "./VersionManager";
-import {runPython} from "3e8-run-python-skulpt"
+import {IRunConfig, runPython} from "3e8-run-python-skulpt"
 // window.isTestMode = window.isTestMode || (()=>false);
 // let runPython = window.runPython;
 // import runJs from "../runJs.js";
@@ -11,13 +11,16 @@ const runJs = (...args: any[]) => console.log(args)
 
 type Tvalidator = (code: string) => boolean
 
-interface ITaskControllerConfig {
+export interface ITaskControllerConfig {
   taskname: string
   element: HTMLDivElement
   template?: string
   solution?: string
   runonload?: boolean
+  runConfig?: Partial<IRunConfig>
   validator?: Tvalidator
+  beforeCode?: string
+  afterCode?: string
   mode: TMode
 }
 
@@ -47,14 +50,21 @@ export class TaskController {
   taskname: string
   template: string
   solution?: string
+  runningWorker?: Worker
   runonload: boolean
+  runConfig?: Partial<IRunConfig>
+  beforeCode: string
+  afterCode: string
   mode: TMode
 
-  constructor(config: ITaskControllerConfig, editorState: Partial<IEditorState>) {
+  constructor(config: ITaskControllerConfig, editorState: Partial<IEditorState> = {}) {
     this.taskname = config.taskname
     this.template = config.template || ""
     this.runonload = config.runonload || false
     this.solution = config.solution
+    this.runConfig = config.runConfig
+    this.beforeCode = config.beforeCode || ""
+    this.afterCode = config.afterCode || ""
     const element: HTMLDivElement = this.element = config.element || document.querySelector(".task")!
     element.innerHTML = "";
     element.appendChild(tmpl.content.cloneNode(true));
@@ -100,12 +110,10 @@ export class TaskController {
   }
 
   async loadTemplate() {
-    let template = await this.versionManager.loadTemplate();
-    console.log({template});
+    await this.versionManager.loadTemplate();
   }
 
   async toggleSolution() {
-    console.log(123);
     this.element.style.position = "relative";
     let existing = this.element.querySelector(".solution.wrap")
     if(existing) {
@@ -117,7 +125,6 @@ export class TaskController {
     `)
     let solutionDiv: HTMLDivElement = this.element.querySelector(".solution.editor")!
     this.element.querySelector(".closeSolution")!.addEventListener("click", ()=>this.toggleSolution())
-    console.log(this.solution);
     new Editor({element: solutionDiv, code: this.solution, mode: this.mode, theme: this.editor.editorState.theme, fontSize: 13, readOnly: true, showGutter: false, showLineNumbers: false})
   }
 
@@ -176,10 +183,18 @@ export class TaskController {
   async hasSolvedVersion() {return this.versionManager.isSolved();}
 
   async run() {
+    if(this.runningWorker) this.runningWorker.terminate();
     this.saveOrAutoSave("run").catch(console.warn);
     this.triggerRunEvent(this.getValue());
-    if(this.mode === "python") {
-      return runPython && await runPython({code: this.getValue(), outputElement: this.outputElement, show: (data: any)=>Math.random()<0.001&&console.log("Look", data)});
+    const beforeCode = this.beforeCode ? this.beforeCode + ";" : ""
+    if(this.mode === "python" && runPython) {
+      this.runningWorker = runPython({
+        code: beforeCode + this.getValue() + this.afterCode,
+        outputElement: this.outputElement,
+        show: (data) => console.log("Look", data),
+        ...this.runConfig,
+      })
+      return this.runningWorker;
     }
     if(this.mode === "javascript") {
       let errors = this.editor.getAnnotations().filter(a=>a.type==="error");
@@ -191,11 +206,13 @@ export class TaskController {
   }
 
   async quit() {
+    console.log("quit");
+    if(this.runningWorker) this.runningWorker.terminate();
     return this.saveOrAutoSave("quit");
   }
-  
+
   initDone(versions: any, template: any) {
-     let event = new CustomEvent("init-done", {"detail": {versions, template}, bubbles: true});
+    let event = new CustomEvent("init-done", {"detail": {versions, template}, bubbles: true});
     this.element.dispatchEvent(event);
   }
 

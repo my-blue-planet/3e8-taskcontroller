@@ -1,4 +1,4 @@
-import {TaskController} from "./TaskController";
+import type {TaskController} from "./TaskController";
 
 // @ts-ignore
 import saveIcon from "./img/menu/icon-save.png"
@@ -60,7 +60,6 @@ export default class TaskMenu {
     if(config.onlyLoadSave) {
       elem.querySelectorAll('button:not(.loadsave)').forEach(btn=>btn.remove())
     }
-		console.log(this.master.solution, "!!");
     if(!this.master.solution) {
       elem.querySelectorAll('button[data-action=toggleSolution]').forEach(btn=>btn.remove())
     }

@@ -31,13 +31,20 @@ export class TaskController {
     taskname;
     template;
     solution;
+    runningWorker;
     runonload;
+    runConfig;
+    beforeCode;
+    afterCode;
     mode;
-    constructor(config, editorState) {
+    constructor(config, editorState = {}) {
         this.taskname = config.taskname;
         this.template = config.template || "";
         this.runonload = config.runonload || false;
         this.solution = config.solution;
+        this.runConfig = config.runConfig;
+        this.beforeCode = config.beforeCode || "";
+        this.afterCode = config.afterCode || "";
         const element = this.element = config.element || document.querySelector(".task");
         element.innerHTML = "";
         element.appendChild(tmpl.content.cloneNode(true));
@@ -78,11 +85,9 @@ export class TaskController {
         return this.saveOrAutoSave(false);
     }
     async loadTemplate() {
-        let template = await this.versionManager.loadTemplate();
-        console.log({ template });
+        await this.versionManager.loadTemplate();
     }
     async toggleSolution() {
-        console.log(123);
         this.element.style.position = "relative";
         let existing = this.element.querySelector(".solution.wrap");
         if (existing) {
@@ -94,7 +99,6 @@ export class TaskController {
     `);
         let solutionDiv = this.element.querySelector(".solution.editor");
         this.element.querySelector(".closeSolution").addEventListener("click", () => this.toggleSolution());
-        console.log(this.solution);
         new Editor({ element: solutionDiv, code: this.solution, mode: this.mode, theme: this.editor.editorState.theme, fontSize: 13, readOnly: true, showGutter: false, showLineNumbers: false });
     }
     async saveOrAutoSave(autosave = false) {
@@ -140,10 +144,19 @@ export class TaskController {
     }
     async hasSolvedVersion() { return this.versionManager.isSolved(); }
     async run() {
+        if (this.runningWorker)
+            this.runningWorker.terminate();
         this.saveOrAutoSave("run").catch(console.warn);
         this.triggerRunEvent(this.getValue());
-        if (this.mode === "python") {
-            return runPython && await runPython({ code: this.getValue(), outputElement: this.outputElement, show: (data) => Math.random() < 0.001 && console.log("Look", data) });
+        const beforeCode = this.beforeCode ? this.beforeCode + ";" : "";
+        if (this.mode === "python" && runPython) {
+            this.runningWorker = runPython({
+                code: beforeCode + this.getValue() + this.afterCode,
+                outputElement: this.outputElement,
+                show: (data) => console.log("Look", data),
+                ...this.runConfig,
+            });
+            return this.runningWorker;
         }
         if (this.mode === "javascript") {
             let errors = this.editor.getAnnotations().filter(a => a.type === "error");
@@ -153,6 +166,9 @@ export class TaskController {
         //return runCode(this.editor.getValue(), errors) //in other script tag for non-strict evaluation
     }
     async quit() {
+        console.log("quit");
+        if (this.runningWorker)
+            this.runningWorker.terminate();
         return this.saveOrAutoSave("quit");
     }
     initDone(versions, template) {

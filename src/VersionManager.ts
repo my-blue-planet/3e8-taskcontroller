@@ -101,7 +101,6 @@ export class VersionManager {
     const lastVersion = this.versions[0] || {code: this.template || ""};
     if(autosave && (Object.keys(payload) as (keyof IVersion)[]).every(key=>lastVersion[key]===payload[key])) return;
     let r = await saveItem(this.getTaskname(), value);
-    console.log(r);
     //await this.validateAndSaveResult({...value, date: r.date});
     await this.getVersions();
   }
@@ -146,7 +145,6 @@ export class VersionManager {
 
   async getVersions() {
     const versions = this.versions = await loadItem(this.getTaskname());
-    console.log(versions);
     await this.displayVersions(versions);
     await this.versionsMayHaveChanged();
     await this.triggerVersionChange(versions);

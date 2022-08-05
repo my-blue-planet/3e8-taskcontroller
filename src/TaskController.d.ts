@@ -2,14 +2,18 @@ import './css/editor.css';
 import { Editor, IEditorState, TMode } from "3e8-editor";
 import TaskMenu from "./TaskMenu";
 import { IVersion, Tautosave, VersionManager } from "./VersionManager";
+import { IRunConfig } from "3e8-run-python-skulpt";
 declare type Tvalidator = (code: string) => boolean;
-interface ITaskControllerConfig {
+export interface ITaskControllerConfig {
     taskname: string;
     element: HTMLDivElement;
     template?: string;
     solution?: string;
     runonload?: boolean;
+    runConfig?: Partial<IRunConfig>;
     validator?: Tvalidator;
+    beforeCode?: string;
+    afterCode?: string;
     mode: TMode;
 }
 /**
@@ -24,9 +28,13 @@ export declare class TaskController {
     taskname: string;
     template: string;
     solution?: string;
+    runningWorker?: Worker;
     runonload: boolean;
+    runConfig?: Partial<IRunConfig>;
+    beforeCode: string;
+    afterCode: string;
     mode: TMode;
-    constructor(config: ITaskControllerConfig, editorState: Partial<IEditorState>);
+    constructor(config: ITaskControllerConfig, editorState?: Partial<IEditorState>);
     addClassSavedOrSolved(): Promise<void>;
     showOpener(e: MouseEvent): Promise<void>;
     save(): Promise<void>;

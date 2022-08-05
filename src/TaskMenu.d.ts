@@ -1,4 +1,4 @@
-import { TaskController } from "./TaskController";
+import type { TaskController } from "./TaskController";
 interface ITaskMenuConfig {
     menuElement: HTMLDivElement;
     master: TaskController;

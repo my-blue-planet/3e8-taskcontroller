@@ -5,7 +5,6 @@ const dbconn = window.indexedDB.open("myplanet", 1);
 
 async function waitForDb(i: number) {
   return new Promise(async (resolve)=>{
-    console.log("waitForDb", i);
     if(db) resolve(db)
     else {
       await new Promise(r=>setTimeout(r, 100))
