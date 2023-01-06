@@ -6,8 +6,8 @@ import {IVersion, Tautosave, VersionManager} from "./VersionManager";
 import {IRunConfig, runPython} from "3e8-run-python-skulpt"
 // window.isTestMode = window.isTestMode || (()=>false);
 // let runPython = window.runPython;
-// import runJs from "../runJs.js";
-const runJs = (...args: any[]) => console.log(args)
+import {runJs} from "3e8-run-js";
+// runJs = (...args: any[]) => console.log(args)
 
 type Tvalidator = (code: string) => boolean
 
@@ -198,7 +198,12 @@ export class TaskController {
     }
     if(this.mode === "javascript") {
       let errors = this.editor.getAnnotations().filter(a=>a.type==="error");
-      return await runJs(this.getValue(), this.outputElement, errors, (data: any)=>console.log("Look", data));
+      this.runningWorker = runJs({
+        code: beforeCode + this.getValue() + this.afterCode,
+        outputElement: this.outputElement,
+        show: (data) => console.log("Look", data),
+        ...this.runConfig,
+      });
     }
 
     //

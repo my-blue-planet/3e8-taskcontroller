@@ -22,7 +22,8 @@
     "vite": "^3.0.3"
   },
   "dependencies": {
-    "3e8-editor": "^3.0.2",
-    "3e8-run-python-skulpt": "^2.3.0"
+    "3e8-editor": "^3.0.5",
+    "3e8-run-js": "^0.5.1",
+    "3e8-run-python-skulpt": "^2.6.1"
   }
 }

@@ -5,8 +5,7 @@ import { VersionManager } from "./VersionManager";
 import { runPython } from "3e8-run-python-skulpt";
 // window.isTestMode = window.isTestMode || (()=>false);
 // let runPython = window.runPython;
-// import runJs from "../runJs.js";
-const runJs = (...args) => console.log(args);
+import { runJs } from "3e8-run-js";
 const editorHtml = `
 <div class="eddy">
   <div class="menu"></div>
@@ -160,7 +159,12 @@ export class TaskController {
         }
         if (this.mode === "javascript") {
             let errors = this.editor.getAnnotations().filter(a => a.type === "error");
-            return await runJs(this.getValue(), this.outputElement, errors, (data) => console.log("Look", data));
+            this.runningWorker = runJs({
+                code: beforeCode + this.getValue() + this.afterCode,
+                outputElement: this.outputElement,
+                show: (data) => console.log("Look", data),
+                ...this.runConfig,
+            });
         }
         //
         //return runCode(this.editor.getValue(), errors) //in other script tag for non-strict evaluation

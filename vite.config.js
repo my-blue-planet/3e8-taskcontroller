@@ -15,6 +15,7 @@ export default {
 			name: 'TaskController',
 			fileName: (format) => format === "es" ? `taskcontroller.js` : `taskcontroller.${format}.js`
 		},
-		rollupOptions: {}
+		rollupOptions: {},
+		base: "./"
 	}
 }

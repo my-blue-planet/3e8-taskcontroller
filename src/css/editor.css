@@ -7,7 +7,7 @@ html {
     box-sizing: border-box;
 }
 *, *:before, *:after {
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 /*INTRO*/
@@ -39,7 +39,6 @@ h3 {margin: 0; padding:0;}
 
 select, input, button {
     font-family: 'Open Sans', sans-serif;
-    vertical-align: top;
 }
 
 .eddy.solved {
@@ -111,9 +110,10 @@ Version opener
 .output {
     border-top: 2px solid #ccc;
     min-height: 4em;
-    max-height: 50vh;
+    max-height: 25vh;
     background-color: #666;
     overflow-x: auto;
+    overflow-y: auto;
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 }
 

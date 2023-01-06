@@ -53,7 +53,7 @@ export declare class TaskController {
     beautify(): Promise<void>;
     getTaskname(): string;
     hasSolvedVersion(): Promise<boolean>;
-    run(): Promise<void | Worker>;
+    run(): Promise<Worker | undefined>;
     quit(): Promise<void>;
     initDone(versions: any, template: any): void;
     triggerRunEvent(code: string): void;

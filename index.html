@@ -7,12 +7,15 @@
 <body>
 	<h1>Test TaskController</h1>
 	<div class="task"></div>
+	<div class="taskjs"></div>
   <script type="module">
     import {TaskController} from "./src/TaskController.ts";
     // runPython({code: "print('Yes, it works!')"})
 		const t = document.querySelector(".task")
 		const tk = new TaskController({element: t, template: "print(2**16)", solution: "333", taskname:"test", mode: "python"}, {})
 		console.log(TaskController);
+		const tjs = document.querySelector(".taskjs")
+		const tkjs = new TaskController({element: tjs, template: "console.log(2**16)", solution: "333", taskname:"testjs", mode: "javascript"}, {})
   </script>
 </body>
 </html>
